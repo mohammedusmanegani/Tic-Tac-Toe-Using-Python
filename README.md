@@ -1,7 +1,6 @@
 # Tic-Tac-Toe-Using-Python
 Implementation of Tic Tac Toe Game Using Python 
 
-
 ## All the actions involved in the game are listed below
 
 - Game Board
