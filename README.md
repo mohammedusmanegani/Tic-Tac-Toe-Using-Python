@@ -14,3 +14,193 @@ Implementation of Tic Tac Toe Game Using Python
 - Check Diagonals
 - Check Tie
 - Flip Player
+
+### Implementation:
+
+How to build a game board in Python?<br />
+Sol:	 We can use Python Lists or Dictionary to Build a game board as shown below.
+
+## Code to Build a Game Board:
+    #Game Board
+    board = ["-", "-", "-",
+             "-", "-", "-",
+             "-", "-", "-"]
+
+How to Flip Player (X or O):<br />
+Sol:	Initially the Player is set to X and once X Moves then we should flip the Player to O as shown below.
+
+## Code to Flip Player (X or O):
+    def flip_player():
+        global current_player
+        if current_player == "X":
+            current_player = "0"
+        elif current_player == "0":
+            current_player = "X"
+        return
+
+How to Check if the Game is Over?<br />
+Sol:	The game will be over then some one wins or there is a draw. Implementation is shown below.
+
+## Code to Check if the Game is Over:
+    def check_if_game_over():
+        check_for_winner()
+        check_if_tie()
+
+How to check if some Won?<br />
+Sol:	Two players who take turns marking the spaces in a three-by-three grid with X or O. The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner.
+
+## Code to check the Winner:
+    def check_for_winner():
+        # Setup Global varinables
+        global winner
+
+        # Check Rows
+        row_winner = check_rows()
+        # Check Columns
+        column_winner = check_columns()
+        # Check Diagonals
+        diagonal_winner = check_diagonals()
+
+        # Get the Winner
+        if row_winner:
+            winner = row_winner
+        elif column_winner:
+            winner = column_winner
+        elif diagonal_winner:
+            winner = diagonal_winner
+        else:
+            winner = None
+        return
+
+    def check_rows():
+        # Setup global varinables
+        global game_still_going
+
+        # check if any of the row has all the same values (and is not empty)
+        row_1 = board[0] == board[1] == board[2] != "-"
+        row_2 = board[3] == board[4] == board[5] != "-"
+        row_3 = board[6] == board[7] == board[8] != "-"
+
+        # If any row dose have a match, Flag that ther is a winner
+        if row_1 or row_2 or row_3:
+            game_still_going = False
+
+        # Return the winner (X or 0)
+        if row_1:
+            return board[0]
+        elif row_2:
+            return board[3]
+        elif row_3:
+            return board[6]
+        return
+
+    def check_columns():
+        # Setup global varinables
+        global game_still_going
+
+        # check if any of the column has all the same values (and is not empty)
+        column_1 = board[0] == board[3] == board[6] != "-"
+        column_2 = board[1] == board[4] == board[7] != "-"
+        column_3 = board[2] == board[5] == board[8] != "-"
+
+        # If any column dose have a match, Flag that ther is a winner
+        if column_1 or column_2 or column_3:
+            game_still_going = False
+
+        # Return the winner (X or 0)
+        if column_1:
+            return board[0]
+        elif column_2:
+            return board[1]
+        elif column_3:
+            return board[2]
+        return
+
+    def check_diagonals():
+        # Setup global varinables
+        global game_still_going
+
+        # check if any of the diagonal has all the same values (and is not empty)
+        diagonal_1 = board[0] == board[4] == board[8] != "-"
+        diagonal_2 = board[2] == board[4] == board[6] != "-"
+
+        # If any diagonal dose have a match, Flag that ther is a winner
+        if diagonal_1 or diagonal_2:
+            game_still_going = False
+
+        # Return the winner (X or 0)
+        if diagonal_1:
+            return board[0]
+        elif diagonal_2:
+            return board[2]
+        return
+
+How to Check Tie?<br />
+Sol:	If there is no match in Row, Column or Diagonal then there is a Tie. And when the game is tied player in tic-tac-toe cannot win a game. It is Just like a cat cannot catch its own tail.
+
+## Code to check Tie:
+    def check_if_tie():
+        global game_still_going
+        if "-" not in board:
+            game_still_going = False
+        return
+
+## Remaining Basic Functionalities:
+
+## Code to display the Game board:
+    def display_board():
+        print(board[0] + " | " + board[1] + " | " + board[2] + "        1 | 2 | 3")
+        print(board[3] + " | " + board[4] + " | " + board[5] + "        4 | 5 | 6")
+        print(board[6] + " | " + board[7] + " | " + board[8] + "        7 | 8 | 9")
+
+## Code of Main Function:
+    def play_game():
+        # Display the initial board
+        display_board()
+
+        # while the game is still going
+        while game_still_going:
+            # Handle a single turn of an arbitary player
+            handle_turn(current_player)
+
+            # Check if Game has Ended
+            check_if_game_over()
+
+            # Flip To other player
+            flip_player()
+
+        if winner == "X" or winner == "0":
+            print(winner + " won.")
+        elif winner == None:
+            print("Tie.")
+
+## Code to handle the turn and Move:
+    def handle_turn(player):
+        # Display whose turn
+        print(player + "'s turn.")
+
+        position = input("Choose a position from 1 to 9: ")
+
+        # If you want to exit (Type "exit")
+        if position == "exit":
+            exit()
+
+        # Input Validation
+        valid = False
+        while not valid:
+            while position not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+                position = input("Choose a position from 1 to 9: ")
+
+            position = int(position) - 1
+
+            if board[position] == "-":
+                valid = True
+            else:
+                print("You cant go there. Go again.")
+
+        board[position] = player
+        display_board()
+
+## Finally call the Root function:
+    # Root Function
+    play_game()
